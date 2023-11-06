@@ -1,8 +1,9 @@
-package com.example.masterproject.presentation
+package com.example.masterproject.ui.mainactivity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.masterproject.App
 import com.example.masterproject.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +17,10 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel = ViewModelProvider(this, MainViewModelFactory())[MainViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            MainViewModelFactory(App.instance.getTestDataUseCase)
+        )[MainViewModel::class.java]
 
         viewModel.getData()
 

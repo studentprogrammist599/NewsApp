@@ -1,4 +1,4 @@
-package com.example.masterproject.presentation
+package com.example.masterproject.ui.mainactivity
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
