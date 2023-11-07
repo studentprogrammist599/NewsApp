@@ -10,6 +10,10 @@ import com.example.masterproject.datasource.database.IDatabaseRepository
 import com.example.masterproject.datasource.network.INetworkRepository
 import com.example.masterproject.datasource.network.NetworkRepository
 import com.example.masterproject.datasource.network.RetrofitService
+import com.example.masterproject.domain.DeleteBreakingNewsUseCase
+import com.example.masterproject.domain.GetAllFavoriteBreakingNews
+import com.example.masterproject.domain.GetBreakingNewsUseCase
+import com.example.masterproject.domain.SaveBreakingNewsUseCase
 import com.example.masterproject.utils.NetworkObserver
 import com.example.masterproject.utils.imageloader.CoilImageLoader
 import retrofit2.Retrofit
@@ -19,19 +23,26 @@ import retrofit2.create
 class App : Application() {
 
     private val iNetworkRepository: INetworkRepository
-        get() = NetworkRepository(retrofitService = retrofitService)
+            by lazy { NetworkRepository(retrofitService = retrofitService) }
 
     private val iDatabaseRepository: IDatabaseRepository
-        get() = DatabaseRepository(database)
+            by lazy { DatabaseRepository(database) }
 
     private val iDataSource: IDatasource
-        get() = Datasource(
-            iDatabaseRepository = iDatabaseRepository,
-            iNetworkRepository = iNetworkRepository,
-        )
+            by lazy {
+                Datasource(
+                    iDatabaseRepository = iDatabaseRepository,
+                    iNetworkRepository = iNetworkRepository,
+                )
+            }
+
+    val getAllFavoriteBreakingNews by lazy { GetAllFavoriteBreakingNews(iDataSource) }
+    val getBreakingNewsUseCase by lazy { GetBreakingNewsUseCase(iDataSource) }
+    val saveBreakingNewsUseCase by lazy { SaveBreakingNewsUseCase(iDataSource) }
+    val deleteBreakingNewsUseCase by lazy { DeleteBreakingNewsUseCase(iDataSource) }
 
     val networkObserver by lazy { NetworkObserver(instance) }
-    val coilImageLoader = CoilImageLoader()
+    val coilImageLoader by lazy {  CoilImageLoader() }
 
     override fun onCreate() {
         super.onCreate()
